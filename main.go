@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"urlshorterner/internal/configmanager"
-	"urlshorterner/internal/httpserver"
+	"urlshortener/internal/configmanager"
+	"urlshortener/internal/httpserver"
 )
 
 func main() {

@@ -16,7 +16,7 @@ environment:
 	docker run -p 6379:6379 --name redis-test -d redis
 
 clean:
-	rm -f urlshorterner
+	rm -f urlshortener
 	rm -f *.out
 
 test:

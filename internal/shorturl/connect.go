@@ -2,9 +2,9 @@ package shorturl
 
 import (
 	"context"
-	"urlshorterner/internal/configmanager"
-	"urlshorterner/internal/shorturl/cache"
-	"urlshorterner/internal/shorturl/database"
+	"urlshortener/internal/configmanager"
+	"urlshortener/internal/shorturl/cache"
+	"urlshortener/internal/shorturl/database"
 
 	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"

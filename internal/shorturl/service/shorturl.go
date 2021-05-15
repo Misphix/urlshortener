@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"net/url"
 	"time"
-	"urlshorterner/internal/shorturl/cache"
-	"urlshorterner/internal/shorturl/database"
-	"urlshorterner/internal/util"
+	"urlshortener/internal/shorturl/cache"
+	"urlshortener/internal/shorturl/database"
+	"urlshortener/internal/util"
 )
 
 type ShortURL struct {

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"path"
 	"time"
-	"urlshorterner/internal/configmanager"
-	"urlshorterner/internal/shorturl/database"
-	"urlshorterner/internal/shorturl/service"
+	"urlshortener/internal/configmanager"
+	"urlshortener/internal/shorturl/database"
+	"urlshortener/internal/shorturl/service"
 
 	"github.com/gin-gonic/gin"
 )
