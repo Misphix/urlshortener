@@ -1,0 +1,9 @@
+httpServer:
+  domain: localhost
+  port: 38744
+
+database:
+  dsn: "test:test@tcp(localhost:3306)/short_url?charset=utf8&parseTime=True&loc=Local"
+
+shortUrl:
+  expireDuration: 6h
