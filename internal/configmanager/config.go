@@ -11,6 +11,7 @@ var config *Config
 type Config struct {
 	HTTPServer HTTPServerConfig
 	Database   DatabaseConfig
+	Redis      RedisConfig
 	ShortURL   ShortURLConfig
 }
 
@@ -21,6 +22,12 @@ type HTTPServerConfig struct {
 
 type DatabaseConfig struct {
 	DSN string
+}
+
+type RedisConfig struct {
+	Address     string
+	DialTimeout time.Duration
+	Expiration  time.Duration
 }
 
 type ShortURLConfig struct {

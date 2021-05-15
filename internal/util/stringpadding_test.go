@@ -2,7 +2,7 @@ package util_test
 
 import (
 	"testing"
-	"urlshorterner/internal/pkg/util"
+	"urlshorterner/internal/util"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -1,7 +1,7 @@
 package httpserver
 
 import (
-	"urlshorterner/internal/pkg/shorturl"
+	"urlshorterner/internal/shorturl"
 
 	"github.com/gin-gonic/gin"
 )
