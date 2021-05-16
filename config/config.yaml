@@ -9,3 +9,6 @@ redis:
   address: "localhost:6379"
   dialTimeout: 10s
   expiration: 6h
+
+logger:
+  level: -1

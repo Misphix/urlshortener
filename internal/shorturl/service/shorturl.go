@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/url"
 	"time"
+	"urlshortener/internal/logger"
 	"urlshortener/internal/shorturl/cache"
 	"urlshortener/internal/shorturl/database"
 	"urlshortener/internal/util"
@@ -35,7 +36,7 @@ func (s *ShortURL) Shorter(ctx context.Context, uri string, expireAt time.Time) 
 	}
 
 	if err := s.cache.Set(ctx, fmt.Sprint(id), uri, time.Since(expireAt)); err != nil {
-		fmt.Println(err.Error())
+		logger.GetLogger().Warnf("redis error: %v", err)
 	}
 
 	urlID := util.PaddingLeadingZero(id)
@@ -52,6 +53,8 @@ func (s *ShortURL) GetURL(ctx context.Context, urlID string) (string, error) {
 	url, err := s.cache.Get(ctx, fmt.Sprint(index))
 	if err == nil {
 		return url, nil
+	} else {
+		logger.GetLogger().Warnf("redis error: %v", err)
 	}
 
 	shortURL, err := s.db.GetURL(index)

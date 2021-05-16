@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/spf13/viper"
+	"go.uber.org/zap/zapcore"
 )
 
 var config *Config
@@ -12,7 +13,7 @@ type Config struct {
 	HTTPServer HTTPServerConfig
 	Database   DatabaseConfig
 	Redis      RedisConfig
-	ShortURL   ShortURLConfig
+	Logger     LoggerConfig
 }
 
 type HTTPServerConfig struct {
@@ -30,8 +31,8 @@ type RedisConfig struct {
 	Expiration  time.Duration
 }
 
-type ShortURLConfig struct {
-	ExpireDuration time.Duration
+type LoggerConfig struct {
+	Level zapcore.Level
 }
 
 func Get() (*Config, error) {
