@@ -1,4 +1,4 @@
-.PHONY: all test
+.PHONY: all start stop clean test deploy
 
 all:
 	go build
@@ -11,7 +11,7 @@ stop:
 	docker stop mysql-test
 	docker stop redis-test
 
-environment:
+env:
 	docker run -p 3306:3306 --name mysql-test -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_USER=test -e MYSQL_PASSWORD=test -e MYSQL_DATABASE=short_url -d mysql:latest
 	docker run -p 6379:6379 --name redis-test -d redis
 
@@ -22,3 +22,7 @@ clean:
 test:
 	go test -v -covermode=count -coverprofile=test.out ./...
 	go tool cover -html=test.out
+
+deploy:
+	docker-compose build
+	docker-compose up

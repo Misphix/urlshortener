@@ -1,6 +1,7 @@
 package configmanager
 
 import (
+	"strings"
 	"time"
 
 	"github.com/spf13/viper"
@@ -47,6 +48,9 @@ func Get() (*Config, error) {
 }
 
 func get() (*Config, error) {
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
+
 	viper.AddConfigPath("config/")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
