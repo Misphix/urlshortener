@@ -12,6 +12,8 @@ type RedisCache struct {
 	expiration time.Duration
 }
 
+var _ Cache = (*RedisCache)(nil)
+
 func NewRedisCache(client *redis.Client, defaultExpiration time.Duration) Cache {
 	return &RedisCache{
 		client:     client,

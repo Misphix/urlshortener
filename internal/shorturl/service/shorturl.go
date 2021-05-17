@@ -75,7 +75,7 @@ func (s *ShortURL) GetURL(ctx context.Context, urlID string) (string, error) {
 func (s *ShortURL) URLIDToIndex(urlID string) (uint, error) {
 	data, err := base32.StdEncoding.DecodeString(urlID)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return util.RemoveLeadingZero(string(data))

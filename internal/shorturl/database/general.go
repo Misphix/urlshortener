@@ -11,6 +11,8 @@ type General struct {
 	db *gorm.DB
 }
 
+var _ Database = (*General)(nil)
+
 func NewGeneralDatabase(db *gorm.DB) (*General, error) {
 	if err := db.AutoMigrate(&ShortURL{}); err != nil {
 		return nil, newDatabaseError(err)
