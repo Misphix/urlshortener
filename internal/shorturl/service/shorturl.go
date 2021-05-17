@@ -35,26 +35,25 @@ func (s *ShortURL) Shorter(ctx context.Context, uri string, expireAt time.Time) 
 		return "", err
 	}
 
-	if err := s.cache.Set(ctx, fmt.Sprint(id), uri, time.Since(expireAt)); err != nil {
-		logger.GetLogger().Warnf("redis error: %v", err)
-	}
-
 	urlID := util.PaddingLeadingZero(id)
 	urlID = base32.StdEncoding.EncodeToString([]byte(urlID))
+	if err := s.cache.Set(ctx, urlID, uri, time.Since(expireAt)); err != nil {
+		logger.GetLogger().Warnf("redis error: %v", err)
+	}
 	return urlID, err
 }
 
 func (s *ShortURL) GetURL(ctx context.Context, urlID string) (string, error) {
-	index, err := s.URLIDToIndex(urlID)
-	if err != nil {
-		return "", err
-	}
-
-	url, err := s.cache.Get(ctx, fmt.Sprint(index))
+	url, err := s.cache.Get(ctx, urlID)
 	if err == nil {
 		return url, nil
 	} else {
 		logger.GetLogger().Warnf("redis error: %v", err)
+	}
+
+	index, err := s.URLIDToIndex(urlID)
+	if err != nil {
+		return "", err
 	}
 
 	shortURL, err := s.db.GetURL(index)
@@ -64,6 +63,10 @@ func (s *ShortURL) GetURL(ctx context.Context, urlID string) (string, error) {
 
 	if shortURL.ExpireAt.Before(time.Now()) {
 		return "", errors.New("url has been expired")
+	}
+
+	if err := s.cache.Set(ctx, urlID, shortURL.URL, time.Since(shortURL.ExpireAt)); err != nil {
+		logger.GetLogger().Warnf("redis error: %v", err)
 	}
 
 	return shortURL.URL, nil
@@ -84,7 +87,7 @@ func (s *ShortURL) DeleteURL(ctx context.Context, urlID string) error {
 		return err
 	}
 
-	if err := s.cache.Delete(ctx, fmt.Sprint(index)); err != nil {
+	if err := s.cache.Delete(ctx, urlID); err != nil {
 		return err
 	}
 

@@ -20,7 +20,7 @@ func main() {
 
 	server, err := httpserver.NewHttpServer()
 	if err != nil {
-		l.Panic(err.Error())
+		l.Fatal(err.Error())
 	}
 
 	server.Run(fmt.Sprintf(":%d", config.HTTPServer.Port))
