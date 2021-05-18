@@ -1,6 +1,6 @@
 # URL Shortener
 
-![CI](https://github.com/Misphix/urlshortener/actions/workflows/go.yml/badge.svg)
+![CI](https://github.com/Misphix/urlshortener/actions/workflows/test.yml/badge.svg)
 ## Run Service
 There are two ways to run the service.
 - Run with local machine
