@@ -10,11 +10,13 @@ import (
 	"urlshortener/internal/shorturl/service"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 )
 
 type ShortURLHandler struct {
 	s        *service.ShortURL
 	basePath string
+	limiter  *rate.Limiter
 }
 
 type UploadRequest struct {
@@ -46,10 +48,16 @@ func NewShortURLHandler() (*ShortURLHandler, error) {
 	return &ShortURLHandler{
 		s:        service.NewShortURL(db, cache),
 		basePath: fmt.Sprintf("%s:%d", config.HTTPServer.Domain, config.HTTPServer.Port),
+		limiter:  rate.NewLimiter(config.Service.LimitRate, config.Service.BurstSize),
 	}, nil
 }
 
 func (h *ShortURLHandler) UploadURL(ctx *gin.Context) {
+	if err := h.limiter.Wait(ctx); err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		return
+	}
+
 	var request UploadRequest
 	if err := ctx.BindJSON(&request); err != nil {
 		ctx.Status(http.StatusBadRequest)
@@ -70,6 +78,11 @@ func (h *ShortURLHandler) UploadURL(ctx *gin.Context) {
 }
 
 func (h *ShortURLHandler) DeleteURL(ctx *gin.Context) {
+	if err := h.limiter.Wait(ctx); err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		return
+	}
+
 	urlID, ok := ctx.Params.Get("urlID")
 	if !ok {
 		ctx.Status(http.StatusBadRequest)
@@ -85,6 +98,11 @@ func (h *ShortURLHandler) DeleteURL(ctx *gin.Context) {
 }
 
 func (h *ShortURLHandler) RedirectURL(ctx *gin.Context) {
+	if err := h.limiter.Wait(ctx); err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		return
+	}
+
 	urlID, ok := ctx.Params.Get("urlID")
 	if !ok {
 		ctx.Status(http.StatusBadRequest)

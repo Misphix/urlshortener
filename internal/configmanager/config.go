@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/viper"
 	"go.uber.org/zap/zapcore"
+	"golang.org/x/time/rate"
 )
 
 var config *Config
@@ -15,6 +16,7 @@ type Config struct {
 	Database   DatabaseConfig
 	Redis      RedisConfig
 	Logger     LoggerConfig
+	Service    ServiceConfig
 }
 
 type HTTPServerConfig struct {
@@ -34,6 +36,11 @@ type RedisConfig struct {
 
 type LoggerConfig struct {
 	Level zapcore.Level
+}
+
+type ServiceConfig struct {
+	LimitRate rate.Limit
+	BurstSize int
 }
 
 func Get() (*Config, error) {

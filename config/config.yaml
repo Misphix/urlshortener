@@ -12,3 +12,7 @@ redis:
 
 logger:
   level: -1
+
+service:
+  limitRate: 60
+  burstSize: 60
